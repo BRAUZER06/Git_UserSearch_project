@@ -7,7 +7,22 @@ function App() {
   const [fetchUser, setFetchUser] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const onClickBtnForm = async () => {
+  const onClickBtnForm = () => {
+    fetchUserGit();
+  };
+  //deboubce
+  const onChangeInput = async (e) => {
+    let timeout;
+    setInputValue(e.target.value);
+    return function () {
+      clearTimeout(timeout);
+      timeout = setTimeout(async () => {
+        fetchUserGit();
+      }, 700);
+    };
+  };
+
+  async function fetchUserGit() {
     setIsLoading(true);
     try {
       const respons = await axios
@@ -15,9 +30,10 @@ function App() {
         .then((res) => setFetchUser(res.data));
     } catch (error) {
       alert("Такого пользователя нет ");
+      console.log(error);
     }
     setIsLoading(false);
-  };
+  }
 
   return (
     <div id="app">
@@ -27,7 +43,7 @@ function App() {
           <input
             disabled={isLoading}
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => onChangeInput(e)}
             type="text"
             className="app-input"
             placeholder="Укажите GitHub-аккаунт"
