@@ -10,7 +10,7 @@ function App() {
   const onClickBtnForm = () => {
     fetchUserGit();
   };
-  //deboubce
+  //debounce
   const onChangeInput = async (e) => {
     let timeout;
     setInputValue(e.target.value);
